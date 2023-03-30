@@ -16,15 +16,6 @@
             "toolsId": "7e9be4da-868e-4b9a-bc5c-234559ffbd60"
         },
         "dataSources": {
-            "mainService": {
-                "uri": "/v2/northwind/northwind.svc/",
-                "type": "OData",
-                "settings": {
-                    "annotations": [],
-                    "localUri": "localService/metadata.xml",
-                    "odataVersion": "2.0"
-                }
-            },
             "V2NorthwindNorthwind.svc": {
                 "uri": "V2/Northwind/Northwind.svc/",
                 "type": "OData",
@@ -130,9 +121,5 @@
             "async": true,
             "id": "App"
         }
-    },
-    "sap.cloud": {
-        "public": true,
-        "service": "ejlaura"
     }
 }
