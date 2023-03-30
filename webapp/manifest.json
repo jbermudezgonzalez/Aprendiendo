@@ -112,11 +112,6 @@
                     "target": [
                         "TargetMain"
                     ]
-                },{
-                    "source": "/catalog/(.*)",
-                    "destination": "hana-app-api",
-                    "csrfProtection": true,
-                    "authenticationType": "xsuaa"
                 }
             ],
             "targets": {

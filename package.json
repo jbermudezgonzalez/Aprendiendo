@@ -8,7 +8,12 @@
     "openui5",
     "sapui5"
   ],
-  
+  "main": "webapp/index.html",
+  "dependencies": {
+    "generator-easy-ui5": "^3.5.1",
+    "hdb": "^0.19.0",
+    "posix": "^4.2.0"
+  },
   "devDependencies": {
     "@sap-ux/ui5-middleware-fe-mockserver": "2",
     "@sap/ui5-builder-webide-extension": "^1.1.9",
