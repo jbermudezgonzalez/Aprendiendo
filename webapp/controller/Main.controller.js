@@ -47,7 +47,6 @@ sap.ui.define([
 
             },
 
-
             onListSelect: function (oEvent) {
                 var fModel = this.getOwnerComponent().getModel("nData");
                 this.getView().byId("helloDialogButton").setEnabled(true);
@@ -76,8 +75,7 @@ sap.ui.define([
                         var arrayO = [];
                         const filtradosO = [];
 
-                        Object.values(model).forEach(element => {
-
+                        model.forEach(element => {
                             let text = element.OrderID.toString();
                             text.slice(-1);
                             var valor = parseInt(text);
@@ -119,20 +117,21 @@ sap.ui.define([
                 });
 
 
-            }, onCreateTable: function (oEvent) {
+            },
+
+            onCreateTable: function (oEvent) {
                 var fModel = this.getOwnerComponent().getModel("nData");
-                this.byId("table").setVisible(true)
                 fModel.read("/Orders", {
                     success: function (oData, oResponse) {
 
-                        var model = oData.results;
+                        var model = crearModel(oData.results);
                         var selectedItem2 = this.getView().byId("filtrados").getSelectedItem().getText();
                         var selectedItem = this.getView().byId("Nombres").getSelectedItem().getText();
 
                         var array = [];
                         const filtrados = [];
-
-                        Object.values(model).forEach(element => {
+                        
+                        model.forEach(element => {
                             array.push({
                                 ShipName: element.ShipName,
                                 CustomerID: element.CustomerID,
@@ -145,9 +144,6 @@ sap.ui.define([
                         for (var i = 0; i < array.length; i++) {
                             const elemento3 = Date.parse(array[i].OrderDate);
                             const date2 = new Date(elemento3);
-                            console.log(date2);
-
-
                             const elemento2 = array[i].EmployeeID;
                             if (elemento2 == selectedItem2 && selectedItem === array[i][0].ShipName) {
                                 filtrados.push({ OrderId: array[i].OrderId, CustomerID: array[i].CustomerID, EmployeeID: array[i].EmployeeID, OrderDate: date2.toLocaleDateString() });
@@ -269,29 +265,6 @@ sap.ui.define([
                 // is only called from within the loaded dialog itself.
                 this.byId("Sort").close();
             },
-            _dataLoaded2: function (oEvent) {
-                var model = this.getOwnerComponent().getModel("nData");
-                var selectedItem = this.getView().byId("Nombres").getSelectedItem().getText();
-
-                var array = [];
-                const filtrados = [];
-
-                Object.values(model.oData).forEach(element => {
-                    array.push({ ShipName: element.ShipName, CustomerID: element.CustomerID });
-                });
-                for (var i = 0; i < array.length; i++) {
-
-                    const elemento = array[i].ShipName;
-                    const elemento2 = array[i].CustomerID;
-                    if (elemento === selectedItem) {
-                        filtrados.push({ Nombre: elemento2 });
-                    }
-                }
-                var Modelo = new sap.ui.model.json.JSONModel();
-                Modelo.setData(filtrados);
-                this.getView().setModel(Modelo, "filtrados");
-            },
-
 
             _errorWhileDataLoading: function (oEvent) {
                 console.log("Error handling");
