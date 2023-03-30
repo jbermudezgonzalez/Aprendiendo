@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+   xmlns="sap.m"
+   xmlns:core="sap.ui.core" 	xmlns:l="sap.ui.layout">
+   <Dialog  id="Sort" title="Filter">
+      <l:VerticalLayout class="sapUiContentPadding">
+         <Title text="Sort Order for OrderID"/>
+         <CheckBox id="Ascendete" text="Ascendente" selected="true"/>
+         <CheckBox id="Descente" text="Descedente" />
+
+         <l:HorizontalLayout>
+            <Button id="Ordenar" text="Filtrar" press="ordenarFuncion"/>
+
+            <Button	text="Cerrar" press=".onCloseDialog"/>
+         </l:HorizontalLayout>
+      </l:VerticalLayout>
+   </Dialog>
+
+</core:FragmentDefinition>

@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "deploy",
+			"label": "Deploy MTA: project1/mta_archives/archive.mtar",
+			"taskType": "Deploy",
+			"mtarPath": "mta_archives/archive.mtar",
+			"cfTarget": "Projecto1",
+			"cfEndpoint": "https://api.cf.us10-001.hana.ondemand.com",
+			"cfOrg": "a3e75899trial",
+			"cfSpace": "dev",
+			"extensions": []
+		},
+		{
+			"type": "build",
+			"label": "Build MTA: project1/mta.yaml",
+			"taskType": "Build",
+			"extensions": []
+		}
+	]
+}
