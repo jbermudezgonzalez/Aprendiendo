@@ -14,7 +14,8 @@ xmlns:u="sap.ui.unified"
              <Select  id="filtrados" items="{filtrados>/}" change="onCreateTable" >
                 <core:Item key="{filtrados>Nombre}" text="{filtrados>Nombre}" />
             </Select>
-    
+            <DatePicker id="leaveSince"  class="leaveSinceInput" change="displayTable"/>
+
 
             <Table  id="table" items="{Tabla>/}">
 
@@ -41,10 +42,10 @@ xmlns:u="sap.ui.unified"
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                                <Text text="{Tabla>OrderId}" />
+                                <Text key="{Tabla>OrderId}" text="{Tabla>OrderId}" />
                                 <Text text="{Tabla>CustomerID}" />
                                 <Text text="{Tabla>EmployeeID}" />
-                                <Text text="{Tabla>OrderDate}" />
+                                <Text key="{Tabla>OrderDate}"  text="{Tabla>OrderDate}" />
                                 <ObjectStatus icon="{Tabla>Impar}" />
                         </cells>
                     </ColumnListItem>

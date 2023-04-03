@@ -2,7 +2,7 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/odata/v2/ODataModel",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/model/Sorter",
+    'sap/ui/model/Sorter',
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
@@ -17,7 +17,7 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageToast) {
+    function (Controller, Sorter, MessageToast) {
         "use strict";
         var orden = 0;
         return Controller.extend("project1.controller.Main", {
@@ -130,7 +130,7 @@ sap.ui.define([
 
                         var array = [];
                         const filtrados = [];
-                        
+
                         model.forEach(element => {
                             array.push({
                                 ShipName: element.ShipName,
@@ -162,57 +162,18 @@ sap.ui.define([
 
 
             //LLamada de funciones
-            ordenarFuncion: function (oEvent) {
-                var model = this.getView().getModel("Tabla");
-                var OrdenarArray = [];
-                var inverso = model.oData.length;
-                if (this.getView().byId("Descente").getSelected()) {
-                    if (orden === 0) {
-                        orden = 1;
-                        while (inverso > 0) {
-                            OrdenarArray.push({ OrderId: model.oData.slice(-1)[0].OrderId, CustomerID: model.oData.slice(-1)[0].CustomerID, EmployeeID: model.oData.slice(-1)[0].EmployeeID, OrderDate: model.oData.slice(-1)[0].OrderDate });
-                            model.oData.pop();
-                            inverso--
-                        }
-                        var Modelo = new sap.ui.model.json.JSONModel();
-                        Modelo.setData(OrdenarArray);
-                        this.getView().setModel(Modelo, "Tabla");
-                    }
-                    else {
-                        sap.m.MessageToast.show('El orden actual es el elegido', {
-                            duration: 3000,
-                            width: "15rem", // default max width supported 
-                        });
-                    }
-                }
-                if (this.getView().byId("Ascendete").getSelected()) {
-                    if (orden === 1) {
-
-                        while (inverso > 0) {
-                            OrdenarArray.push({ OrderId: model.oData.slice(-1)[0].OrderId, CustomerID: model.oData.slice(-1)[0].CustomerID, EmployeeID: model.oData.slice(-1)[0].EmployeeID, OrderDate: model.oData.slice(-1)[0].OrderDate });
-                            model.oData.pop();
-                            inverso--
-                        }
-                        var Modelo = new sap.ui.model.json.JSONModel();
-                        Modelo.setData(OrdenarArray);
-                        this.getView().setModel(Modelo, "Tabla");
-                    }
-                    else {
-                        sap.m.MessageToast.show('El orden actual es el elegido', {
-                            duration: 3000,
-                            width: "15rem", // default max width supported 
-                        });
-                    }
-                }
-                else {
-                    sap.m.MessageToast.show('Elije una opcion correcta', {
-                        duration: 3000,
-                        width: "15rem", // default max width supported 
-                    });
-                }
+            handleSortDialogConfirm: function (oEvent) {//Ordenacion con fiori-sapui5
+                var oView = this.getView();
+                var oTable = oView.byId("table");
+                var mParams = oEvent.getParameters();
+                var oBinding = oTable.getBinding("items");
+                var sPath = mParams.sortItem.getKey();
+                var bDescending = mParams.sortDescending;
+                var aSorters = [];
+                aSorters.push(new sap.ui.model.Sorter(sPath, bDescending));
+                oBinding.sort(aSorters);
 
             },
-            // coNTROL DE FECHA,
 
             displayTable: function (oEvent) {// coNTROL DE FECHA
                 var fModel = this.getOwnerComponent().getModel("nData");
@@ -220,27 +181,22 @@ sap.ui.define([
                 var leaveSince = this.getView().byId("leaveSince").getValue();
                 fModel.read("/Orders", {
                     success: function (oData) {
-                        var model = oData.results;
-                        var array = [];
+                        var datos = oData.results;
                         const filtrados = [];
-                        Object.values(model).forEach(element => {
-                            array.push({
-                                ShipName: element.ShipName,
-                                CustomerID: element.CustomerID,
-                                OrderId: element.OrderID,
-                                EmployeeID: element.EmployeeID,
-                                OrderDate: element.OrderDate
-                            });
-                        });
                         const date = new Date(leaveSince);
-                        for (var i = 0; i < array.length; i++) {
-                            const elemento2 = Date.parse(array[i][0].OrderDate);
+                        datos.forEach(element => {
+                            const elemento2 = Date.parse(element.OrderDate);
                             const date2 = new Date(elemento2);
-                            console.log(date2.toLocaleDateString());
                             if (date.toDateString() === date2.toDateString()) {
-                                filtrados.push({ OrderId: array[i].OrderId, CustomerID: array[i].CustomerID, EmployeeID: array[i].EmployeeID, OrderDate: date2.toLocaleDateString() });
+                                filtrados.push({
+                                    ShipName: element.ShipName,
+                                    CustomerID: element.CustomerID,
+                                    OrderId: element.OrderID,
+                                    EmployeeID: element.EmployeeID,
+                                    OrderDate: date2.toLocaleDateString()
+                                });
                             }
-                        }
+                        });
                         var Modelo = new sap.ui.model.json.JSONModel();
                         Modelo.setData(filtrados);
                         this.getView().setModel(Modelo, "Tabla");
@@ -250,7 +206,6 @@ sap.ui.define([
 
             },
             onOpenDialog: function () {
-                // create dialog lazily
                 if (!this.pDialog) {
                     this.pDialog = this.loadFragment({
                         name: "project1.view.modal"
@@ -270,5 +225,6 @@ sap.ui.define([
                 console.log("Error handling");
             }
         });
+
 
     });

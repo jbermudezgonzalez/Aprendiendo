@@ -103,6 +103,14 @@
                     "target": [
                         "TargetMain"
                     ]
+                },
+                {
+                    "path": "/destinations/northwind",
+                    "target": {
+                        "type": "destination",
+                        "name": "northwind"
+                    },
+                    "description": "Northwind OData Service"
                 }
             ],
             "targets": {
